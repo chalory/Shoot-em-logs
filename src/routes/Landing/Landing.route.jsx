@@ -1,13 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 import "./Landing.style.scss";
 
 import posterSrc1 from "../../assets/poster-1.jpg";
 import posterSrc2 from "../../assets/poster-2.jpg";
 
+import audioSrc from "../../assets/slinger_swagger.mp3";
+
+import Deso from "deso-protocol";
+const deso = new Deso();
+
 const Landing = () => {
+    const playAudio = () => {
+        const audio = new Audio(audioSrc);
+        audio.play();
+        audio.volume = 0.2;
+    };
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
+    const loginHandler = async () => {
+        const { user } = await deso.identity.login();
+
+        if (Object.keys(user).length === 0) {
+            return;
+        }
+
+        const { encryptedSeedHex } = user;
+        if (!encryptedSeedHex) return;
+        setIsLoggedIn(true);
+    };
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate("/play");
+        }
+    }, [isLoggedIn]);
+
     return (
-        <section className="landing">
+        <section className="landing" onClick={playAudio}>
             <div className="heading-box">
                 <div>
                     <span className="main">Shoot 'em</span>
@@ -28,9 +62,9 @@ const Landing = () => {
                         Obcaecati voluptatum, accusamus laborum sunt consequuntur recusandae
                         impedit. Perspiciatis atque neque ex obcaecati fuga. Doloribus!
                     </p>
-                    <a href="#" className="start-shoot-btn">
+                    <button onClick={loginHandler} className="start-shoot-btn">
                         Start Shooting!
-                    </a>
+                    </button>
                 </div>
             </div>
 
