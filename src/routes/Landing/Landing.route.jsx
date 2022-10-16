@@ -13,10 +13,15 @@ import Deso from "deso-protocol";
 const deso = new Deso();
 
 const Landing = () => {
+    const [isPlaying, setIsPlaying] = useState(false);
+
     const playAudio = () => {
-        const audio = new Audio(audioSrc);
-        audio.play();
-        audio.volume = 0.2;
+        if (!isPlaying) {
+            const audio = new Audio(audioSrc);
+            audio.play();
+            audio.volume = 0.2;
+            setIsPlaying(true);
+        }
     };
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
