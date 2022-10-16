@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import Header from "./routes/Header/Header.component";
+import Landing from "./routes/Landing/Landing.route";
+
+import audioBg from "./assets/slinger_swagger.mp3";
+
+const App = () => {
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const playAudio = () => {
+        if (!isPlaying) {
+            let audio = new Audio(audioBg);
+            audio.play();
+            audio.volume = 0.15;
+            setIsPlaying(true);
+        }
+    };
+
+    return (
+        <div onClick={playAudio}>
+            <Header />
+            <main>
+                <Landing />
+            </main>
+        </div>
+    );
+};
 
 export default App;
